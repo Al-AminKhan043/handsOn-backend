@@ -3,7 +3,7 @@ const User=require('../models/User')
 const registerUser=async (req,res)=>{
   try{
     const {name, email, password, confirmPassword, skills, causes}=req.body;
-    if(password!==passwordConfirm){
+    if(password!==confirmPassword){
         return res.status(400).json({message:'Password dont match!'});
     }
     const existUser=await User.findOne({email});

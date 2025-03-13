@@ -2,6 +2,8 @@ require('dotenv').config();
 const express=require('express');
 const mongoose=require('mongoose')
 const cors=require('cors')
+const userRoutes=require('./routes/userRoutes');
+
 
 const app=express();
 app.use(express.json());
@@ -22,9 +24,11 @@ async function main() {
       }
     }
 
-app.get('/',(req,res)=>{
-    res.send('HandsOn running')
-})
+// app.get('/',(req,res)=>{
+//     res.send('HandsOn running')
+// })
+
+app.use('/api/users',userRoutes);
 
 app.listen(PORT,()=>{
     console.log(`🚀 Server running on port ${PORT}`)
