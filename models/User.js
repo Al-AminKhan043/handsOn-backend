@@ -18,32 +18,27 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 8,
   },
-  profile: {
-    skills: {
-      type: [String],
-      required: true,
-    },
-    causes: {
-      type: [String],
-      required: true,
-    },
+  skills: {
+    type: [String], // Array of skills
+    required: true,
+  },
+  causes: {
+    type: [String], // Array of causes
+    required: true,
   },
 });
 
-// Pre-save hook to hash password
+// Pre-save hook to hash password before saving
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   
-  // Hash password
   this.password = await bcrypt.hash(this.password, 10);
-  
-  // Remove confirmPassword (don't store it)
-  this.confirmPassword = undefined;
-
   next();
 });
+
+// Method to compare hashed password
 userSchema.methods.comparePassword = async function (password) {
-    return await bcrypt.compare(password, this.password);
+  return await bcrypt.compare(password, this.password);
 };
 
 const User = mongoose.model('User', userSchema);
