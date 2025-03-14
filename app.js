@@ -24,9 +24,9 @@ async function main() {
       }
     }
 
-// app.get('/',(req,res)=>{
-//     res.send('HandsOn running')
-// })
+app.get('/',(req,res)=>{
+    res.send('HandsOn running')
+})
 
 app.use('/api/users',userRoutes);
 

@@ -52,7 +52,19 @@ const loginUser= async(req,res)=>{
     }
 }
 
+const logoutUser= async (req,res)=>{
 
+    try{
+        res.cookie('jwt','',{
+            httpOnly:true,
+            expires: new Date(0)
+        })
+        res.status(200).json({message: 'User logged out successfully.'})
+    }
+    catch(err){
+        res.status(500).json({message:'Error logging out', error: err.message})
+    }
+}
 
 
 const getAllUsers= async(req,res)=>{
@@ -64,5 +76,5 @@ const getAllUsers= async(req,res)=>{
         res.status(500).json({message: "Error fetching users", error: err.message })
     }
 }
-module.exports= {registerUser, getAllUsers,loginUser};
+module.exports= {registerUser, getAllUsers,loginUser,logoutUser};
 
