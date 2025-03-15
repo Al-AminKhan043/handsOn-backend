@@ -31,6 +31,8 @@ catch(err){
 }
 }
 
+
+
 const updatePost = async (req, res) => {
     const { id } = req.params; // ✅ Fix ID extraction
     const { title, description, level } = req.body;
@@ -60,6 +62,31 @@ const updatePost = async (req, res) => {
 };
 
 
+const deletePost = async (req, res) => {
+    const { id } = req.params;  // Get the post ID from the URL
+    const userId = req.user.id; // Get the logged-in user's ID from the request
+
+    try {
+        const post = await Post.findById(id);  // Find the post by ID
+
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found.' });
+        }
+
+        // Check if the logged-in user is the one who posted it
+        if (post.postedBy.toString() !== userId) {
+            return res.status(403).json({ message: 'Unauthorized to delete this post.' });
+        }
+
+        // Delete the post
+        await post.deleteOne();
+        res.status(200).json({ message: 'Post deleted successfully.' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error deleting post.' });
+    }
+};
 
 
-module.exports={getAllPosts,createPost,updatePost}
+
+module.exports={getAllPosts,createPost,updatePost,deletePost}
