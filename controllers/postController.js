@@ -13,7 +13,22 @@ const getAllPosts= async(req,res)=>{
 }
 
 const createPost= async(req,res)=>{
-
+const {title,description,level}=req.body;
+const userId=req.user.id;
+try{
+    const newPost= new Post({
+        title,
+        description,
+        level,
+        postedBy:userId
+    })
+    const savedPost= await newPost.save();
+    res.status(201).json(savedPost);
+}
+catch(err){
+    console.error(err);
+    res.status(500).json({ message: 'Error creating post' });
+}
 }
 
-module.exports={getAllPosts}
+module.exports={getAllPosts,createPost}
