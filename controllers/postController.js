@@ -31,4 +31,35 @@ catch(err){
 }
 }
 
-module.exports={getAllPosts,createPost}
+const updatePost = async (req, res) => {
+    const { id } = req.params; // ✅ Fix ID extraction
+    const { title, description, level } = req.body;
+    const userId = req.user.id;
+
+    try {
+        const post = await Post.findById(id);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found.' });
+        }
+
+        if (post.postedBy.toString() !== userId) {
+            return res.status(403).json({ message: 'Unauthorized to update this post.' });
+        }
+
+        // Update fields if provided
+        post.title = title || post.title;
+        post.description = description || post.description;
+        post.level = level || post.level;
+
+        const updatedPost = await post.save(); // ✅ Fix saving method
+        res.status(200).json(updatedPost);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error updating post' });
+    }
+};
+
+
+
+
+module.exports={getAllPosts,createPost,updatePost}

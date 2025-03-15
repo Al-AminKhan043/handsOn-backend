@@ -11,7 +11,7 @@ const postSchema= new mongoose.Schema({
     },
     level:{
         type: String,
-        enum:['low,','medium','urgent'],
+        
         required:true
     },
     postedBy:{
