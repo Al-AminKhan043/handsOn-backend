@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
-const User= require('./User') 
+const User= require('./User')
+const Comment=require('./Comment') 
 const postSchema= new mongoose.Schema({
     title:{
      type: String,
@@ -19,6 +20,14 @@ const postSchema= new mongoose.Schema({
         ref:'User',
         required:true
     },
+    
+        comments:[
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Comment'
+            }
+        ]
+    ,
     createdAt: {
         type: Date,
         default: Date.now
