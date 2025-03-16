@@ -1,29 +1,35 @@
 const Comment=require('../models/Comment');
 const Post= require('../models/Post')
 
-const postComment= async(req,res)=>{
-    const userId=req.user.id;
-    const {text}=req.body;
+const createComment = async (req, res) => {
+    const { text } = req.body;
     const {postId}=req.params;
-
-    try{
-        const postExist= await Post.findById(postId);
-        if(!postExist){
-           return res.status(404).json({message:'Post not found.'})
+    const userId = req.user.id;
+    
+    try {
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found.' });
         }
-        const newComment= new Comment ({
+
+        const newComment = new Comment({
             text,
             postedBy: userId,
             post: postId
         });
-        const savedComment= await newComment.save();
-        res.status(201).json(savedComment)
+
+        const savedComment = await newComment.save();
+
+        // Push comment ID to post's comments array
+        post.comments.push(savedComment._id);
+        await post.save();
+
+        res.status(201).json(savedComment);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error creating comment' });
     }
-    catch(err){
-        console.log(err);
-        res.status(500).json({message:'Error posting comment.'})
-    }
-}
+};
 
 
 const deleteComment= async(req,res)=>{
@@ -83,4 +89,4 @@ const editComment=async(req,res)=>{
 }
 
 
-module.exports={postComment,deleteComment,getAllComment,editComment}
+module.exports={createComment,deleteComment,getAllComment,editComment}

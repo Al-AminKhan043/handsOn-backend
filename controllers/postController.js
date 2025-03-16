@@ -3,7 +3,14 @@ const User=require('../models/User')
 
 const getAllPosts= async(req,res)=>{
     try{
-        const posts= await Post.find().populate('postedBy','name');
+        const posts= await Post.find().populate('postedBy','name')
+        .populate({
+            path:'comments',
+            populate:{
+                path:'postedBy',
+                select:'name'
+            }
+        });
         res.status(200).json(posts);
     }
     catch(err){
