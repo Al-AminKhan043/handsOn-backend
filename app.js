@@ -3,7 +3,8 @@ const express=require('express');
 const mongoose=require('mongoose')
 const cors=require('cors')
 const userRoutes=require('./routes/userRoutes');
-const postRouters=require('./routes/postRoutes')
+const postRoutes=require('./routes/postRoutes')
+const commentRoutes=require('./routes/commentRoutes');
 
 const app=express();
 app.use(express.json());
@@ -29,7 +30,8 @@ app.get('/',(req,res)=>{
 })
 
 app.use('/api/users',userRoutes);
-app.use('/api/posts',postRouters)
+app.use('/api/posts',postRoutes);
+app.use('/api/comments',commentRoutes);
 
 app.listen(PORT,()=>{
     console.log(`🚀 Server running on port ${PORT}`)
