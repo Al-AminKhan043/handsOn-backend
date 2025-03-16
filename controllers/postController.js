@@ -1,23 +1,36 @@
 const Post= require('../models/Post')
 const User=require('../models/User')
 
-const getAllPosts= async(req,res)=>{
-    try{
-        const posts= await Post.find().populate('postedBy','name')
-        .populate({
-            path:'comments',
-            populate:{
-                path:'postedBy',
-                select:'name'
-            }
+const getAllPosts = async (req, res) => {
+    try {
+        const { page = 1, limit = 5 } = req.query; // Get page & limit from query
+        const skip = (page - 1) * limit; 
+
+        const posts = await Post.find()
+            .populate('postedBy', 'name')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'postedBy',
+                    select: 'name'
+                }
+            })
+            .sort({ createdAt: -1 }) // Show newest posts first
+            .skip(skip) // Skip previous pages' data
+            .limit(parseInt(limit)); // Get only the required posts
+
+        const totalPosts = await Post.countDocuments(); // Get total post count
+
+        res.status(200).json({
+            posts,
+            totalPages: Math.ceil(totalPosts / limit),
+            currentPage: parseInt(page)
         });
-        res.status(200).json(posts);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error retrieving posts' });
     }
-    catch(err){
-     console.log(err);
-     res.status(500).json({message: 'Error retrieving posts'});
-    }
-}
+};
 
 const createPost= async(req,res)=>{
 const {title,description,level}=req.body;
