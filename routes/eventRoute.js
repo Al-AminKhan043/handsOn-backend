@@ -13,6 +13,7 @@ const {getAllEvents,
 router.post('/new',protect, createEvent);
 router.get('/',getAllEvents);
 router.put('/:eventId/edit', protect,updateEvent);
+router.delete('/:eventId',protect, deleteEvent);
 
 
 module.exports = router;
