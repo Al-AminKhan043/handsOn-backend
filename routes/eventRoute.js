@@ -7,13 +7,13 @@ const {getAllEvents,
     updateEvent,
     deleteEvent,
     addInterestedUser,
-    removeInterestedUser, } =require('../controllers/eventController')
+    removeInterestedUser } =require('../controllers/eventController')
 
 
 router.post('/new',protect, createEvent);
 router.get('/',getAllEvents);
 router.put('/:eventId/edit', protect,updateEvent);
 router.delete('/:eventId',protect, deleteEvent);
-
-
+router.post('/:eventId/user', protect,addInterestedUser )
+router.delete('/:eventId/user', protect,removeInterestedUser)
 module.exports = router;
