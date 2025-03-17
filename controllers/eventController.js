@@ -4,16 +4,33 @@ const User = require('../models/User');
 // Get all events
 const getAllEvents = async (req, res) => {
     try {
+        // Extract page and limit from query parameters with default values
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = (page - 1) * limit;
+
+        // Fetch events with pagination
         const events = await Event.find()
             .populate('createdBy', 'name email') // Populate createdBy user details
-            .populate('interestedUsers', 'name email'); // Populate interested users details
+            .populate('interestedUsers', 'name email') // Populate interested users details
+            .skip(skip) // Skip previous pages' events
+            .limit(limit); // Limit the number of results per page
 
-        res.status(200).json(events);
+        // Count total events for frontend reference
+        const totalEvents = await Event.countDocuments();
+
+        res.status(200).json({
+            events,
+            totalPages: Math.ceil(totalEvents / limit),
+            currentPage: page,
+            hasMore: skip + events.length < totalEvents, // Check if more pages exist
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error retrieving events' });
     }
 };
+
 
 // Create a new event
 const createEvent = async (req, res) => {
