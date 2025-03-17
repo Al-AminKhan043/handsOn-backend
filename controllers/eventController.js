@@ -1,6 +1,6 @@
 const Event = require('../models/Event');
 const User = require('../models/User');
-
+const { format } = require('date-fns');
 // Get all events
 const getAllEvents = async (req, res) => {
     try {
@@ -94,11 +94,14 @@ const updateEvent = async (req, res) => {
             return res.status(403).json({ message: 'Unauthorized to update this event' });
         }
 
+        // Format the time to 12-hour AM/PM format
+        const formattedTime = time ? format(new Date(`1970-01-01T${time}:00`), 'hh:mm a') : event.time;
+
         // Update event fields
         event.title = title || event.title;
         event.description = description || event.description;
         event.date = date || event.date;
-        event.time = time || event.time;
+        event.time = formattedTime; // Use the formatted time
         event.location = location || event.location;
         event.category = category || event.category;
 
