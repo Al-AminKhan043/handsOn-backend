@@ -1,13 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const {protect}=require('../middlewares/authMiddleware')
-const eventController = require('../controllers/eventController');
-
-const {createEvent, getAllEvents, } =require('../controllers/eventController')
+const {getAllEvents,
+    createEvent,
+    getEventById,
+    updateEvent,
+    deleteEvent,
+    addInterestedUser,
+    removeInterestedUser, } =require('../controllers/eventController')
 
 
 router.post('/new',protect, createEvent);
 router.get('/',getAllEvents);
+router.put('/:eventId/edit', protect,updateEvent);
 
 
 module.exports = router;
