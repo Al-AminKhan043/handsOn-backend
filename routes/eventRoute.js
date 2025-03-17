@@ -7,7 +7,7 @@ const {createEvent, getAllEvents, } =require('../controllers/eventController')
 
 
 router.post('/new',protect, createEvent);
-
+router.get('/',getAllEvents);
 
 
 module.exports = router;
