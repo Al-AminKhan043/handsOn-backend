@@ -1,6 +1,7 @@
 const Event = require('../models/Event');
 const User = require('../models/User');
 const { format } = require('date-fns');
+const mongoose = require('mongoose');
 // Get all events
 const getAllEvents = async (req, res) => {
     try {
