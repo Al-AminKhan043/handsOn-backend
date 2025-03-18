@@ -26,8 +26,18 @@ const registerUser = async (req, res) => {
 
         // Create new user
         const user = await User.create({ name, email, password, skills, causes });
-
-        res.status(201).json({ message: "User registered successfully!", user });
+        const token = generateToken(user._id); 
+        res.status(201).json({
+            message: "User registered successfully!",
+            token,  // Include token in the response
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                skills: user.skills,
+                causes: user.causes
+            }
+        });
     } catch (error) {
         res.status(500).json({ message: "Error registering user", error: error.message });
     }
