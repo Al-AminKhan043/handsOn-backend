@@ -143,7 +143,7 @@ const deleteEvent = async (req, res) => {
 // Add a user to the interestedUsers list
 const addInterestedUser = async (req, res) => {
     const { eventId } = req.params;
-    const userId = mongoose.Types.ObjectId(req.user.id); 
+    const userId =(req.user.id); 
 
     try {
         const event = await Event.findById(eventId);
@@ -170,7 +170,7 @@ const addInterestedUser = async (req, res) => {
 // Remove a user from the interestedUsers list
 const removeInterestedUser = async (req, res) => {
     const { eventId } = req.params;
-    const userId = mongoose.Types.ObjectId(req.user.id); // Convert string to ObjectId
+    const userId =(req.user.id); // Convert string to ObjectId
 
     try {
         const event = await Event.findById(eventId);
