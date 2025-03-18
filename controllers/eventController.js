@@ -142,7 +142,7 @@ const deleteEvent = async (req, res) => {
 // Add a user to the interestedUsers list
 const addInterestedUser = async (req, res) => {
     const { eventId } = req.params;
-    const  userId  = req.user.id; 
+    const userId = mongoose.Types.ObjectId(req.user.id); 
 
     try {
         const event = await Event.findById(eventId);
@@ -169,7 +169,7 @@ const addInterestedUser = async (req, res) => {
 // Remove a user from the interestedUsers list
 const removeInterestedUser = async (req, res) => {
     const { eventId } = req.params;
-    const  userId  = req.user.id;  
+    const userId = mongoose.Types.ObjectId(req.user.id); // Convert string to ObjectId
 
     try {
         const event = await Event.findById(eventId);
@@ -178,9 +178,14 @@ const removeInterestedUser = async (req, res) => {
             return res.status(404).json({ message: 'Event not found' });
         }
 
+        // Check if the user is in the list
+        if (!event.interestedUsers.some(id => id.equals(userId))) {
+            return res.status(400).json({ message: 'User is not in the interested users list' });
+        }
+
         // Remove the user from the interestedUsers array
         event.interestedUsers = event.interestedUsers.filter(
-            (id) => id.toString() !== userId
+            (id) => !id.equals(userId) // Use equals to properly compare ObjectId
         );
 
         await event.save();
