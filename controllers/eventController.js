@@ -142,7 +142,7 @@ const deleteEvent = async (req, res) => {
 // Add a user to the interestedUsers list
 const addInterestedUser = async (req, res) => {
     const { eventId } = req.params;
-    const { userId } = req.body; // Assuming userId is provided in the body
+    const  userId  = req.user.id; 
 
     try {
         const event = await Event.findById(eventId);
@@ -169,7 +169,7 @@ const addInterestedUser = async (req, res) => {
 // Remove a user from the interestedUsers list
 const removeInterestedUser = async (req, res) => {
     const { eventId } = req.params;
-    const { userId } = req.body; // Assuming userId is provided in the body
+    const  userId  = req.user.id;  
 
     try {
         const event = await Event.findById(eventId);
