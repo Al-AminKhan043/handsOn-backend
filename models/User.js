@@ -19,11 +19,11 @@ const userSchema = new mongoose.Schema({
     minlength: 8,
   },
   skills: {
-    type: [String], // Array of skills
+    type: [String], 
     required: true,
   },
   causes: {
-    type: [String], // Array of causes
+    type: [String], 
     required: true,
   },
 });

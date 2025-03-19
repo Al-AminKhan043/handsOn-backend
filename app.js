@@ -18,8 +18,8 @@ app.use(helmet());
 app.use(mongoSanitize());
 app.use(xss());
 const limiter= rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 120, // Limit each IP to 100 requests per window
+  windowMs: 15 * 60 * 1000, 
+  max: 120, 
   message: "Too many requests, please try again later.",
 })
 app.use(limiter);

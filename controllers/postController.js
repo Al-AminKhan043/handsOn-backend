@@ -3,7 +3,7 @@ const User=require('../models/User')
 
 const getAllPosts = async (req, res) => {
     try {
-        const { page = 1, limit = 5 } = req.query; // Get page & limit from query
+        const { page = 1, limit = 5 } = req.query;
         const skip = (page - 1) * limit; 
 
         const posts = await Post.find()
@@ -15,11 +15,11 @@ const getAllPosts = async (req, res) => {
                     select: 'name'
                 }
             })
-            .sort({ createdAt: -1 }) // Show newest posts first
-            .skip(skip) // Skip previous pages' data
-            .limit(parseInt(limit)); // Get only the required posts
+            .sort({ createdAt: -1 }) 
+            .skip(skip) 
+            .limit(parseInt(limit)); 
 
-        const totalPosts = await Post.countDocuments(); // Get total post count
+        const totalPosts = await Post.countDocuments(); 
 
         res.status(200).json({
             posts,
@@ -54,7 +54,7 @@ catch(err){
 
 
 const updatePost = async (req, res) => {
-    const { id } = req.params; // ✅ Fix ID extraction
+    const { id } = req.params; 
     const { title, description, level } = req.body;
     const userId = req.user.id;
 
@@ -73,7 +73,7 @@ const updatePost = async (req, res) => {
         post.description = description || post.description;
         post.level = level || post.level;
 
-        const updatedPost = await post.save(); // ✅ Fix saving method
+        const updatedPost = await post.save(); 
         res.status(200).json(updatedPost);
     } catch (err) {
         console.error(err);
@@ -83,11 +83,11 @@ const updatePost = async (req, res) => {
 
 
 const deletePost = async (req, res) => {
-    const { id } = req.params;  // Get the post ID from the URL
-    const userId = req.user.id; // Get the logged-in user's ID from the request
+    const { id } = req.params;  
+    const userId = req.user.id; 
 
     try {
-        const post = await Post.findById(id);  // Find the post by ID
+        const post = await Post.findById(id);  
 
         if (!post) {
             return res.status(404).json({ message: 'Post not found.' });
