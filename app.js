@@ -13,8 +13,23 @@ const eventRoutes=require('./routes/eventRoute')
 
 const app=express();
 app.use(express.json());
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
-app.use(cors({ origin: FRONTEND_URL, credentials: true }));
+const allowedOrigins = [
+  'http://localhost:5173',  
+  'https://hands-on-app.vercel.app', 
+  'https://hands-on-ixnutyu7v-al-amin-khans-projects-58808c94.vercel.app', 
+];
+
+// Configure CORS with allowed origins
+app.use(cors({
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
 app.use(helmet());
 app.use(mongoSanitize());
 app.use(xss());
