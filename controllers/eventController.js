@@ -12,10 +12,10 @@ const getAllEvents = async (req, res) => {
 
         // Fetch events with pagination
         const events = await Event.find()
-            .populate('createdBy', 'name email') // Populate createdBy user details
-            .populate('interestedUsers', 'name email') // Populate interested users details
-            .skip(skip) // Skip previous pages' events
-            .limit(limit); // Limit the number of results per page
+            .populate('createdBy', 'name email') 
+            .populate('interestedUsers', 'name email') 
+            .skip(skip) 
+            .limit(limit); 
 
         // Count total events for frontend reference
         const totalEvents = await Event.countDocuments();
@@ -24,7 +24,7 @@ const getAllEvents = async (req, res) => {
             events,
             totalPages: Math.ceil(totalEvents / limit),
             currentPage: page,
-            hasMore: skip + events.length < totalEvents, // Check if more pages exist
+            hasMore: skip + events.length < totalEvents, 
         });
     } catch (error) {
         console.error(error);
@@ -36,7 +36,7 @@ const getAllEvents = async (req, res) => {
 // Create a new event
 const createEvent = async (req, res) => {
     const { title, description, date, time, location, category } = req.body;
-    const userId = req.user.id; // Assuming user ID is available from authentication middleware
+    const userId = req.user.id;
 
     try {
         const newEvent = new Event({
@@ -81,7 +81,7 @@ const getEventById = async (req, res) => {
 const updateEvent = async (req, res) => {
     const { eventId } = req.params;
     const { title, description, date, time, location, category } = req.body;
-    const userId = req.user.id; // Assuming user ID is available from authentication middleware
+    const userId = req.user.id; 
 
     try {
         const event = await Event.findById(eventId);
@@ -102,7 +102,7 @@ const updateEvent = async (req, res) => {
         event.title = title || event.title;
         event.description = description || event.description;
         event.date = date || event.date;
-        event.time = formattedTime; // Use the formatted time
+        event.time = formattedTime; 
         event.location = location || event.location;
         event.category = category || event.category;
 
@@ -117,7 +117,7 @@ const updateEvent = async (req, res) => {
 // Delete an event
 const deleteEvent = async (req, res) => {
     const { eventId } = req.params;
-    const userId = req.user.id; // Assuming user ID is available from authentication middleware
+    const userId = req.user.id; 
 
     try {
         const event = await Event.findById(eventId);
@@ -170,7 +170,7 @@ const addInterestedUser = async (req, res) => {
 // Remove a user from the interestedUsers list
 const removeInterestedUser = async (req, res) => {
     const { eventId } = req.params;
-    const userId =(req.user.id); // Convert string to ObjectId
+    const userId =(req.user.id); 
 
     try {
         const event = await Event.findById(eventId);
@@ -186,7 +186,7 @@ const removeInterestedUser = async (req, res) => {
 
         // Remove the user from the interestedUsers array
         event.interestedUsers = event.interestedUsers.filter(
-            (id) => !id.equals(userId) // Use equals to properly compare ObjectId
+            (id) => !id.equals(userId) 
         );
 
         await event.save();

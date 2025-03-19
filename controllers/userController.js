@@ -29,7 +29,7 @@ const registerUser = async (req, res) => {
         const token = generateToken(user._id); 
         res.status(201).json({
             message: "User registered successfully!",
-            token,  // Include token in the response
+            token, 
             user: {
                 id: user._id,
                 name: user.name,
@@ -65,7 +65,7 @@ const loginUser = async (req, res) => {
             message: "Login successful",
             token,
             user: {
-                id: user._id,  // Send _id as id
+                id: user._id,  
                 name: user.name,
                 email,
                 skills: user.skills,
