@@ -3,6 +3,7 @@ const express=require('express');
 const mongoose=require('mongoose')
 const cors=require('cors')
 const helmet=require('helmet');
+const rateLimit = require("express-rate-limit");
 const userRoutes=require('./routes/userRoutes');
 const postRoutes=require('./routes/postRoutes')
 const commentRoutes=require('./routes/commentRoutes');
@@ -11,6 +12,12 @@ const app=express();
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(helmet());
+const limiter= rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 120, // Limit each IP to 100 requests per window
+  message: "Too many requests, please try again later.",
+})
+app.use(limiter);
 
 const PORT=process.env.PORT;
 const MONGO_URL=process.env.MONGO_URL;
