@@ -3,7 +3,6 @@ const express=require('express');
 const mongoose=require('mongoose')
 const cors=require('cors')
 const helmet=require('helmet');
-const rateLimit = require("express-rate-limit");
 const xss=require('xss-clean');
 const mongoSanitize=require('express-mongo-sanitize');
 const userRoutes=require('./routes/userRoutes');
@@ -13,29 +12,22 @@ const eventRoutes=require('./routes/eventRoute')
 
 const app=express();
 app.use(express.json());
+
 const allowedOrigins = [
   'http://localhost:5173',  
   'https://hands-on-app.vercel.app', 
   'https://hands-on-ixnutyu7v-al-amin-khans-projects-58808c94.vercel.app', 
 ];
 
-
-
-
 app.use(cors({
-  origin: '*', 
+  origin: allowedOrigins, 
   credentials: true,
 }));
 
 app.use(helmet());
 app.use(mongoSanitize());
 app.use(xss());
-const limiter= rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 120, 
-  message: "Too many requests, please try again later.",
-})
-app.use(limiter);
+
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URL=process.env.MONGO_URL;
