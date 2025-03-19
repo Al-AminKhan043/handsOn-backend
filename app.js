@@ -19,17 +19,14 @@ const allowedOrigins = [
   'https://hands-on-ixnutyu7v-al-amin-khans-projects-58808c94.vercel.app', 
 ];
 
-// Configure CORS with allowed origins
+
+
+
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: '*', 
   credentials: true,
 }));
+
 app.use(helmet());
 app.use(mongoSanitize());
 app.use(xss());
