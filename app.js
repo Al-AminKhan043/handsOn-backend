@@ -38,14 +38,25 @@ async function main() {
       }
     }
 
-app.get('/',(req,res)=>{
-    res.send('HandsOn running')
-})
+
 
 app.use('/api/users',userRoutes);
 app.use('/api/posts',postRoutes);
 app.use('/api/comments',commentRoutes);
 app.use('/api/events',eventRoutes);
+
+app.use((req,res,next)=>{
+  res.status(404).json({success: false, message:'Route not found.'})
+  next(error);
+})
+
+app.use((err, req, res, next) => {
+  console.error("💥 Error:", err);
+  res.status(err.status || 500).json({
+      success: false,
+      message: err.message || 'Something went wrong on the server',
+  });
+});
 
 app.listen(PORT,()=>{
     console.log(`🚀 Server running on port ${PORT}`)
