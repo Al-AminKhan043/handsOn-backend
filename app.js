@@ -2,6 +2,7 @@ require('dotenv').config();
 const express=require('express');
 const mongoose=require('mongoose')
 const cors=require('cors')
+const helmet=require('helmet');
 const userRoutes=require('./routes/userRoutes');
 const postRoutes=require('./routes/postRoutes')
 const commentRoutes=require('./routes/commentRoutes');
@@ -9,7 +10,7 @@ const eventRoutes=require('./routes/eventRoute')
 const app=express();
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-
+app.use(helmet());
 
 const PORT=process.env.PORT;
 const MONGO_URL=process.env.MONGO_URL;
