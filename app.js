@@ -45,9 +45,9 @@ app.use('/api/posts',postRoutes);
 app.use('/api/comments',commentRoutes);
 app.use('/api/events',eventRoutes);
 
-app.use((req,res,next)=>{
+app.use((req,res)=>{
   res.status(404).json({success: false, message:'Route not found.'})
-  next(error);
+  
 })
 
 app.use((err, req, res, next) => {
