@@ -4,6 +4,7 @@ const mongoose=require('mongoose')
 const cors=require('cors')
 const helmet=require('helmet');
 const rateLimit = require("express-rate-limit");
+const xss=require('xss-clean');
 const mongoSanitize=require('express-mongo-sanitize');
 const userRoutes=require('./routes/userRoutes');
 const postRoutes=require('./routes/postRoutes')
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(helmet());
 app.use(mongoSanitize());
+app.use(xss());
 const limiter= rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 120, // Limit each IP to 100 requests per window
