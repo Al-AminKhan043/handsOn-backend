@@ -24,7 +24,7 @@ const limiter= rateLimit({
 })
 app.use(limiter);
 
-const PORT=process.env.PORT;
+const PORT = process.env.PORT || 5000;
 const MONGO_URL=process.env.MONGO_URL;
 
 main().catch(err => console.log(err));
