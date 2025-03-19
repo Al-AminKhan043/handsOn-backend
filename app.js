@@ -16,7 +16,8 @@ app.use(express.json());
 const allowedOrigins = [
   'http://localhost:5173',  
   'https://hands-on-app.vercel.app', 
-  'https://hands-on-ixnutyu7v-al-amin-khans-projects-58808c94.vercel.app', 
+  'https://hands-on-ixnutyu7v-al-amin-khans-projects-58808c94.vercel.app',
+  'https://hands-on-24c9273zk-al-amin-khans-projects-58808c94.vercel.app/' 
 ];
 
 app.use(cors({
